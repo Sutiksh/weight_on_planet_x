@@ -9,15 +9,40 @@ class WeightOnPlanet extends StatefulWidget{
 }
 
 class WeightOnPlanetState extends State<WeightOnPlanet>{
-
+  double _fianlResult = 0.0;
   int radioValue = 0;
-
+  String _finalResultPlanet="";
+  final TextEditingController _userWeight = new TextEditingController();
   void handleRadioValue(int value){
     setState(() {
       radioValue = value;
-      print(radioValue);
+
+      switch(radioValue){
+        case 0:
+          _fianlResult = calculateWeight(_userWeight.text, 0.06);
+          _finalResultPlanet="Pluto";
+          break;
+        case 1:
+          _fianlResult = calculateWeight(_userWeight.text, 0.38);
+          _finalResultPlanet="Mars";
+          break;
+          case 2:
+          _fianlResult = calculateWeight(_userWeight.text, 0.91);
+          _finalResultPlanet="Venus";
+          break;
+      }
     });
 
+  }
+
+  double calculateWeight(String weight, double value){
+    if(int.parse(weight).toString().isNotEmpty && int.parse(weight)>0){
+      return int.parse(weight) * value;
+    }
+    else{
+      print("Wrong!!");
+      return int.parse(weight)*0.38;
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -48,7 +73,7 @@ class WeightOnPlanetState extends State<WeightOnPlanet>{
                 children: <Widget>[
 
                   new TextField(
-                     controller: null,
+                     controller: _userWeight,
                     keyboardType: TextInputType.number,
                     decoration: new InputDecoration(
                       labelText: 'Your Weight',
@@ -81,7 +106,11 @@ class WeightOnPlanetState extends State<WeightOnPlanet>{
                           "Venus",
                           style: new TextStyle(color: Colors.white,fontSize: 19.5),),
                     ],
-                  )
+                  ),
+                  //Result Text
+                  new Padding(padding: EdgeInsets.all(15.6)),
+                  new Text("Your weight on $_finalResultPlanet is $_fianlResult",
+                  style: new TextStyle(color: Colors.white,fontSize: 19.5,fontWeight: FontWeight.w500),)
                 ],
               ),
             )
